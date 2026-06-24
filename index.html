@@ -775,18 +775,86 @@
           <span class="eyebrow">08 · Resume</span>
           <span class="accent">The full story on one page</span>
         </h2>
-        <div class="resume__wrap">
-          <div class="resume__preview" id="resume-preview">
-            <img src="assets/img/resume.png" alt="Resume preview"
-                 onclick="window.open('assets/Raveendra_Pujari_Resume_CloudDevOps.pdf', 'ResumeWindow', 'width=900,height=700,scrollbars=yes,resizable=yes');">
+
+        <div class="resume-card">
+          <div class="resume-card__head">
+            <div class="resume-card__avatar">
+              <img src="assets/img/perfil.png" alt="" aria-hidden="true">
+            </div>
+            <div class="resume-card__id">
+              <h3>Raveendra Pujari</h3>
+              <p>DevOps Engineer · GCP, Kubernetes, MLOps</p>
+              <div class="resume-card__chips">
+                <span class="rc-chip"><i class='bx bx-map'></i> USA</span>
+                <span class="rc-chip"><i class='bx bx-envelope'></i> Open to roles</span>
+                <span class="rc-chip"><i class='bx bxs-graduation'></i> M.S. CS · USD</span>
+              </div>
+            </div>
+            <div class="resume-card__stats">
+              <div class="rc-stat">
+                <div class="rc-stat__val">3+</div>
+                <div class="rc-stat__lbl">Years</div>
+              </div>
+              <div class="rc-stat">
+                <div class="rc-stat__val">6×</div>
+                <div class="rc-stat__lbl">GCP Certs</div>
+              </div>
+              <div class="rc-stat">
+                <div class="rc-stat__val">2</div>
+                <div class="rc-stat__lbl">Awards</div>
+              </div>
+            </div>
           </div>
-          <div class="resume__cta">
+
+          <div class="resume-card__body">
+            <div class="resume-card__highlights">
+              <h4>Highlights</h4>
+              <ul>
+                <li>
+                  <i class='bx bx-cloud'></i>
+                  <span>Cloud-native infra on <b>GCP</b> with production <b>GKE Autopilot</b> workloads.</span>
+                </li>
+                <li>
+                  <i class='bx bx-code-alt'></i>
+                  <span><b>Terraform</b>, <b>Jenkins</b>, and <b>Cloud Build</b> pipelines — 20% faster deploys.</span>
+                </li>
+                <li>
+                  <i class='bx bx-brain'></i>
+                  <span><b>MLOps</b> on Vertex AI + Cloud Build — training, A/B testing, rollback on GKE.</span>
+                </li>
+                <li>
+                  <i class='bx bx-shield-quarter'></i>
+                  <span>IAM, VPC, Ingress &amp; Load Balancers for secure, scalable access.</span>
+                </li>
+                <li>
+                  <i class='bx bx-line-chart'></i>
+                  <span><b>Prometheus + Grafana</b> monitoring and observability.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="resume-card__preview" id="resume-preview"
+                 onclick="window.open('assets/Raveendra_Pujari_Resume_CloudDevOps.pdf', 'ResumeWindow', 'width=900,height=700,scrollbars=yes,resizable=yes');">
+              <img src="assets/img/resume.png" alt="Resume preview">
+              <span class="resume-card__preview-tag">
+                <i class='bx bx-file'></i> 1 page · PDF
+              </span>
+              <span class="resume-card__preview-cta">
+                <i class='bx bx-show'></i> Click to open
+              </span>
+            </div>
+          </div>
+
+          <div class="resume-card__actions">
             <a href="javascript:void(0)" class="btn btn--primary" onclick="window.open('assets/Raveendra_Pujari_Resume_CloudDevOps.pdf', 'ResumeWindow', 'width=900,height=700,scrollbars=yes,resizable=yes');">
               <i class='bx bx-show'></i> View Resume
             </a>
             <a href="assets/Raveendra_Pujari_Resume_CloudDevOps.pdf" download class="btn btn--ghost">
-              <i class='bx bx-download'></i> Download
+              <i class='bx bx-download'></i> Download PDF
             </a>
+            <span class="resume-card__updated">
+              <i class='bx bx-refresh'></i> Latest · 2026
+            </span>
           </div>
         </div>
       </div>
