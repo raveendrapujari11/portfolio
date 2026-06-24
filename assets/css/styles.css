@@ -498,27 +498,56 @@ section .section-inner {
   box-shadow: 0 10px 25px -8px var(--section-grad-2);
 }
 
-/* Hero illustration (clean image like the original) */
+/* Hero illustration (squircle photo with gradient border) */
 .home__visual {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 360px;
+  min-height: 380px;
 }
 .home__img {
   position: relative;
-  width: 295px;
+  width: 320px;
   max-width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 36% 64% 64% 36% / 36% 36% 64% 64%;
+  padding: 5px;
+  background: linear-gradient(135deg, var(--section-grad-1), var(--section-grad-2), var(--section-grad-3));
+  background-size: 200% 200%;
+  background-position: 0% 50%;
   z-index: 1;
+  box-shadow:
+    0 25px 50px -12px var(--section-grad-2),
+    0 0 0 1px rgba(255, 255, 255, .1) inset;
+  transform: rotate(-3deg);
+  transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease, background-position 1.2s ease;
+  animation: morphShape 14s ease-in-out infinite, borderShift 8s ease-in-out infinite;
 }
-@media (min-width: 768px) {
-  .home__img { width: 457px; }
+.home__img:hover {
+  transform: rotate(0deg) translateY(-6px) scale(1.02);
+  background-position: 100% 50%;
+  box-shadow:
+    0 35px 70px -12px var(--section-grad-2),
+    0 0 0 1px rgba(255, 255, 255, .15) inset;
 }
 .home__img img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
+  border-radius: inherit;
+  object-fit: cover;
+  background: var(--surface-2);
+}
+@keyframes morphShape {
+  0%, 100% { border-radius: 36% 64% 64% 36% / 36% 36% 64% 64%; }
+  25%      { border-radius: 50% 50% 35% 65% / 50% 65% 35% 50%; }
+  50%      { border-radius: 64% 36% 64% 36% / 64% 36% 64% 36%; }
+  75%      { border-radius: 35% 65% 50% 50% / 65% 50% 50% 35%; }
+}
+@keyframes borderShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
 }
 .home__shape {
   position: absolute;
@@ -1189,7 +1218,7 @@ section .section-inner {
 }
 @media screen and (min-width: 1024px) {
   .bd-grid { margin-left: auto; margin-right: auto; }
-  .home__img { width: 457px; }
+  .home__img { width: 380px; }
 }
 
 /* ===== Reduce motion ===== */
