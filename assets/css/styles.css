@@ -989,6 +989,19 @@ section .section-inner {
   background: linear-gradient(135deg, var(--section-grad-1), var(--section-grad-2));
   box-shadow: 0 0 0 4px rgba(99, 102, 241, .12);
 }
+.recog-icon {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  margin-top: .15rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--section-grad-1), var(--section-grad-2));
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 6px 16px -6px var(--section-grad-2);
+}
 .recog-list strong {
   display: block;
   color: var(--text);
