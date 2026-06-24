@@ -918,6 +918,84 @@ section .section-inner {
 }
 .cert-card__link:hover { text-decoration: underline; }
 
+/* ===== RECOGNITION (Achievements + Education) ===== */
+.recognition-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--mb-4);
+}
+@media (min-width: 820px) {
+  .recognition-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.recog-card {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--mb-4);
+  box-shadow: var(--shadow-sm);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.recog-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  border-color: var(--section-grad-2);
+}
+.recog-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--section-grad-1), var(--section-grad-2));
+  color: #fff;
+  font-size: 1.3rem;
+  margin-bottom: var(--mb-2);
+  box-shadow: 0 6px 18px -6px var(--section-grad-2);
+}
+.recog-card h3 {
+  font-family: var(--display-font);
+  font-size: var(--h3-font-size);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: var(--mb-3);
+}
+.recog-list { display: flex; flex-direction: column; gap: var(--mb-3); }
+.recog-list li {
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+}
+.recog-dot {
+  flex-shrink: 0;
+  width: 10px; height: 10px;
+  margin-top: .5rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--section-grad-1), var(--section-grad-2));
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, .12);
+}
+.recog-list strong {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+  font-size: .95rem;
+  line-height: 1.4;
+}
+.recog-meta {
+  display: block;
+  font-size: .82rem;
+  color: var(--text-muted);
+  margin-top: .15rem;
+  line-height: 1.45;
+}
+section[data-section="recognition"] {
+  --section-grad-1: #f59e0b;
+  --section-grad-2: #f43f5e;
+  --section-grad-3: #a855f7;
+  --section-tint: rgba(245, 158, 11, .10);
+}
+
 /* ===== PHOTOGRAPHY / CAROUSEL ===== */
 .photo-intro {
   text-align: center;
