@@ -570,91 +570,104 @@
           <button class="photo-tab" data-filter="street" role="tab" aria-selected="false">Street</button>
         </div>
 
-        <div class="gallery" id="gallery">
-          <figure class="gallery__item gallery__item--featured" data-cat="landscape">
-            <img src="assets/gallery/photo1.jpg" alt="Mountain vista at golden hour" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">Golden hour</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 01 / 12</span>
-            </figcaption>
-          </figure>
-          <figure class="gallery__item" data-cat="portrait">
-            <img src="assets/gallery/photo2.jpg" alt="Portrait study" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">Portrait study</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 02 / 12</span>
-            </figcaption>
-          </figure>
-          <figure class="gallery__item" data-cat="street">
-            <img src="assets/gallery/photo3.jpg" alt="Street scene" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">City rhythm</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 03 / 12</span>
-            </figcaption>
-          </figure>
-          <figure class="gallery__item" data-cat="landscape">
-            <img src="assets/gallery/photo4.jpg" alt="Open landscape" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">Open road</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 04 / 12</span>
-            </figcaption>
-          </figure>
-          <figure class="gallery__item" data-cat="portrait">
-            <img src="assets/gallery/photo5.jpg" alt="Close-up portrait" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">In the moment</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 05 / 12</span>
-            </figcaption>
-          </figure>
-          <figure class="gallery__item" data-cat="landscape">
-            <img src="assets/gallery/photo6.jpg" alt="Wide landscape" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">Wide open</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 06 / 12</span>
-            </figcaption>
-          </figure>
-          <figure class="gallery__item" data-cat="street">
-            <img src="assets/gallery/photo7.jpg" alt="Urban detail" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">Urban detail</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 07 / 12</span>
-            </figcaption>
-          </figure>
-          <figure class="gallery__item" data-cat="portrait">
-            <img src="assets/gallery/photo8.jpg" alt="Portrait frame" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">A glance</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 08 / 12</span>
-            </figcaption>
-          </figure>
-          <figure class="gallery__item" data-cat="street">
-            <img src="assets/gallery/photo9.jpg" alt="Street moment" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">Wanderer</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 09 / 12</span>
-            </figcaption>
-          </figure>
-          <figure class="gallery__item" data-cat="landscape">
-            <img src="assets/gallery/photo10.jpg" alt="Natural landscape" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">Earth tones</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 10 / 12</span>
-            </figcaption>
-          </figure>
-          <figure class="gallery__item" data-cat="portrait">
-            <img src="assets/gallery/photo11.jpg" alt="Studio portrait" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">Studio light</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 11 / 12</span>
-            </figcaption>
-          </figure>
-          <figure class="gallery__item" data-cat="street">
-            <img src="assets/gallery/photo12.jpg" alt="Travel moment" loading="lazy">
-            <figcaption class="gallery__cap">
-              <span class="gallery__cap-title">Wander far</span>
-              <span class="gallery__cap-meta"><i class='bx bx-camera'></i> 12 / 12</span>
-            </figcaption>
-          </figure>
+        <div class="carousel" id="gallery" role="region" aria-roledescription="carousel" aria-label="Photography carousel">
+          <button class="carousel__arrow carousel__arrow--prev" id="gallery-prev" aria-label="Previous photo">
+            <i class='bx bx-chevron-left'></i>
+          </button>
+          <button class="carousel__arrow carousel__arrow--next" id="gallery-next" aria-label="Next photo">
+            <i class='bx bx-chevron-right'></i>
+          </button>
+
+          <div class="carousel__viewport">
+            <div class="carousel__track" id="gallery-track">
+              <figure class="carousel__slide" data-cat="landscape">
+                <img src="assets/gallery/photo1.jpg" alt="Mountain vista at golden hour" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">Golden hour</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 01 / 12</span>
+                </figcaption>
+              </figure>
+              <figure class="carousel__slide" data-cat="portrait">
+                <img src="assets/gallery/photo2.jpg" alt="Portrait study" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">Portrait study</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 02 / 12</span>
+                </figcaption>
+              </figure>
+              <figure class="carousel__slide" data-cat="street">
+                <img src="assets/gallery/photo3.jpg" alt="Street scene" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">City rhythm</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 03 / 12</span>
+                </figcaption>
+              </figure>
+              <figure class="carousel__slide" data-cat="landscape">
+                <img src="assets/gallery/photo4.jpg" alt="Open landscape" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">Open road</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 04 / 12</span>
+                </figcaption>
+              </figure>
+              <figure class="carousel__slide" data-cat="portrait">
+                <img src="assets/gallery/photo5.jpg" alt="Close-up portrait" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">In the moment</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 05 / 12</span>
+                </figcaption>
+              </figure>
+              <figure class="carousel__slide" data-cat="landscape">
+                <img src="assets/gallery/photo6.jpg" alt="Wide landscape" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">Wide open</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 06 / 12</span>
+                </figcaption>
+              </figure>
+              <figure class="carousel__slide" data-cat="street">
+                <img src="assets/gallery/photo7.jpg" alt="Urban detail" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">Urban detail</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 07 / 12</span>
+                </figcaption>
+              </figure>
+              <figure class="carousel__slide" data-cat="portrait">
+                <img src="assets/gallery/photo8.jpg" alt="Portrait frame" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">A glance</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 08 / 12</span>
+                </figcaption>
+              </figure>
+              <figure class="carousel__slide" data-cat="street">
+                <img src="assets/gallery/photo9.jpg" alt="Street moment" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">Wanderer</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 09 / 12</span>
+                </figcaption>
+              </figure>
+              <figure class="carousel__slide" data-cat="landscape">
+                <img src="assets/gallery/photo10.jpg" alt="Natural landscape" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">Earth tones</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 10 / 12</span>
+                </figcaption>
+              </figure>
+              <figure class="carousel__slide" data-cat="portrait">
+                <img src="assets/gallery/photo11.jpg" alt="Studio portrait" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">Studio light</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 11 / 12</span>
+                </figcaption>
+              </figure>
+              <figure class="carousel__slide" data-cat="street">
+                <img src="assets/gallery/photo12.jpg" alt="Travel moment" loading="lazy" draggable="false">
+                <figcaption class="carousel__cap">
+                  <span class="carousel__cap-title">Wander far</span>
+                  <span class="carousel__cap-meta"><i class='bx bx-camera'></i> 12 / 12</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="carousel__dots" id="gallery-dots" role="tablist" aria-label="Photo pagination"></div>
         </div>
       </div>
     </section>

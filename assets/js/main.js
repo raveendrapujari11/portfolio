@@ -7,8 +7,7 @@
    - Theme switcher (light / dark / system)
    - Typing effect with cursor
    - Stats counter (intersection observer)
-   - Skill bar fill on scroll
-   - Gallery lightbox + arrows
+   - Photography carousel (drag/swipe/keys/dots) + lightbox
    - Contact form (Formspree)
    - Toast notifications
    =========================================================== */
@@ -60,14 +59,12 @@
     const link = $('.nav__link[href="#' + current + '"]');
     if (link) link.classList.add('active');
 
-    // Update sticky label
     if (stickyLabel) {
       const active = sections.find(s => s.id === current);
       if (active) {
         const name = active.getAttribute('data-section');
         stickyLabel.textContent = name;
         body.setAttribute('data-section-active', name);
-        // sync background blob colors
         const grad1 = getComputedStyle(active).getPropertyValue('--section-grad-1').trim();
         const grad2 = getComputedStyle(active).getPropertyValue('--section-grad-2').trim();
         const grad3 = getComputedStyle(active).getPropertyValue('--section-grad-3').trim();
@@ -111,7 +108,6 @@
       themeBtn.setAttribute('title', `Theme: ${mode} (click for ${next})`);
     }
   };
-  // Init theme
   let savedMode = 'system';
   try { savedMode = localStorage.getItem('themeMode') || 'system'; } catch (_) {}
   applyTheme(savedMode);
@@ -164,7 +160,7 @@
   }
 
   /* ===== IntersectionObserver: reveal on scroll ===== */
-  const revealTargets = $$('.reveal, .bento__card, .cert-card, .project-card, .exp-card, .stat, .timeline__item');
+  const revealTargets = $$('.reveal, .bento__card, .cert-card, .project-card, .exp-card, .stat, .timeline__item, .carousel__slide');
   revealTargets.forEach(t => t.classList.add('reveal'));
 
   const ioReveal = new IntersectionObserver((entries) => {
@@ -172,7 +168,6 @@
       if (entry.isIntersecting) {
         const el = entry.target;
         el.classList.add('is-visible');
-        // Stat counters
         if (el.classList.contains('stat')) {
           const numEl = el.querySelector('.stat__value');
           if (numEl && !numEl.dataset.counted) {
@@ -196,17 +191,129 @@
   }, { threshold: 0.15 });
   revealTargets.forEach(t => ioReveal.observe(t));
 
-  /* ===== Gallery: lightbox + filter tabs ===== */
-  const galleryEl = $('#gallery');
-  const galleryItems = galleryEl ? $$('.gallery__item', galleryEl) : [];
+  /* ===== Photography: Carousel + Lightbox + Filter tabs ===== */
+  const carouselEl = $('#gallery');
+  const track = $('#gallery-track');
+  const slides = track ? $$('.carousel__slide', track) : [];
+  const prevArrow = $('#gallery-prev');
+  const nextArrow = $('#gallery-next');
+  const dotsContainer = $('#gallery-dots');
+  const tabs = $$('.photo-tab');
   const lightbox = $('#lightbox');
   const lightboxImg = $('#lightbox-img');
   const lightboxCap = $('#lightbox-caption');
   const closeBtn = $('.lightbox__close');
-  const prevBtn = $('.lightbox__prev');
-  const nextBtn = $('.lightbox__next');
-  const tabs = $$('.photo-tab');
-  let currentIndex = 0;
+  const lbPrevBtn = $('.lightbox__prev');
+  const lbNextBtn = $('.lightbox__next');
+
+  let activeIndex = 0;
+  let lightboxOpen = false;
+  let didDrag = false;
+
+  /* Build pagination dots */
+  if (dotsContainer && slides.length) {
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel__dot';
+      dot.setAttribute('aria-label', `Go to photo ${i + 1}`);
+      dot.addEventListener('click', () => goTo(i));
+      dotsContainer.appendChild(dot);
+    });
+  }
+  const dots = dotsContainer ? $$('.carousel__dot', dotsContainer) : [];
+
+  /* Carousel geometry */
+  const centerSlide = (index, smooth = true) => {
+    if (!track || !slides.length) return;
+    const target = slides[index];
+    if (!target) return;
+    const viewportWidth = track.parentElement.clientWidth;
+    const slideWidth = target.offsetWidth;
+    let offset = target.offsetLeft - (viewportWidth - slideWidth) / 2;
+    const maxOffset = Math.max(0, track.scrollWidth - viewportWidth);
+    offset = Math.max(0, Math.min(offset, maxOffset));
+    if (!smooth) track.style.transition = 'none';
+    track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+    if (!smooth) requestAnimationFrame(() => { track.style.transition = ''; });
+  };
+
+  const updateActive = () => {
+    slides.forEach((s, i) => s.classList.toggle('is-active', i === activeIndex));
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === activeIndex));
+  };
+
+  const goTo = (i, smooth = true) => {
+    if (!slides.length) return;
+    activeIndex = Math.max(0, Math.min(slides.length - 1, i));
+    updateActive();
+    centerSlide(activeIndex, smooth);
+  };
+
+  const next = () => {
+    let i = activeIndex + 1;
+    while (i < slides.length && slides[i].classList.contains('is-hidden')) i++;
+    if (i >= slides.length) i = slides.findIndex(s => !s.classList.contains('is-hidden'));
+    if (i >= 0) goTo(i);
+  };
+
+  const prev = () => {
+    let i = activeIndex - 1;
+    while (i >= 0 && slides[i].classList.contains('is-hidden')) i--;
+    if (i < 0) {
+      for (let j = slides.length - 1; j >= 0; j--) {
+        if (!slides[j].classList.contains('is-hidden')) { i = j; break; }
+      }
+    }
+    if (i >= 0) goTo(i);
+  };
+
+  if (prevArrow) prevArrow.addEventListener('click', prev);
+  if (nextArrow) nextArrow.addEventListener('click', next);
+
+  /* Drag / swipe */
+  if (track) {
+    let startX = 0, currentX = 0, startOffset = 0, isDown = false;
+
+    const getOffset = () => {
+      const m = new DOMMatrix(getComputedStyle(track).transform);
+      return m.m41 || 0;
+    };
+
+    const onDown = (e) => {
+      isDown = true;
+      didDrag = false;
+      startX = (e.touches ? e.touches[0].clientX : e.clientX);
+      startOffset = getOffset();
+      track.classList.add('is-dragging');
+    };
+    const onMove = (e) => {
+      if (!isDown) return;
+      currentX = (e.touches ? e.touches[0].clientX : e.clientX);
+      const delta = currentX - startX;
+      if (Math.abs(delta) > 6) didDrag = true;
+      track.style.transform = `translate3d(${startOffset + delta}px, 0, 0)`;
+    };
+    const onUp = () => {
+      if (!isDown) return;
+      isDown = false;
+      track.classList.remove('is-dragging');
+      const delta = currentX - startX;
+      const threshold = Math.max(40, (track.parentElement.clientWidth || 600) * 0.15);
+      if (delta < -threshold) next();
+      else if (delta > threshold) prev();
+      else goTo(activeIndex);
+    };
+
+    track.addEventListener('mousedown', onDown);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    track.addEventListener('touchstart', onDown, { passive: true });
+    track.addEventListener('touchmove', onMove, { passive: true });
+    track.addEventListener('touchend', onUp);
+    track.querySelectorAll('img').forEach(img => {
+      img.addEventListener('dragstart', e => e.preventDefault());
+    });
+  }
 
   /* Filter tabs */
   tabs.forEach(tab => {
@@ -217,75 +324,85 @@
         t.classList.toggle('is-active', active);
         t.setAttribute('aria-selected', active ? 'true' : 'false');
       });
-      galleryItems.forEach(item => {
-        const cat = item.getAttribute('data-cat');
+      slides.forEach(s => {
+        const cat = s.getAttribute('data-cat');
         const match = filter === 'all' || cat === filter;
-        if (match) {
-          item.classList.remove('is-hidden');
-          // Re-trigger pop animation
-          item.classList.remove('is-shown');
-          // Force reflow
-          void item.offsetWidth;
-          item.classList.add('is-shown');
-        } else {
-          item.classList.add('is-hidden');
-          item.classList.remove('is-shown');
-        }
+        s.classList.toggle('is-hidden', !match);
       });
+      const firstVisible = slides.findIndex(s => !s.classList.contains('is-hidden'));
+      if (firstVisible >= 0) goTo(firstVisible);
     });
   });
 
-  if (lightbox && lightboxImg && galleryItems.length) {
-    const open = (i) => {
-      // Walk through only visible items
-      const visible = galleryItems.filter(it => !it.classList.contains('is-hidden'));
-      if (!visible.length) return;
-      const idxInVisible = visible.indexOf(galleryItems[i]);
-      // If the requested i is hidden, jump to first/last visible neighbor
-      const target = idxInVisible >= 0 ? visible[(idxInVisible + (i - idxInVisible < 0 ? -1 : 0) + visible.length) % visible.length] : visible[0];
-      currentIndex = galleryItems.indexOf(target);
+  /* Resize */
+  let resizeRaf;
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => centerSlide(activeIndex, false));
+  });
+
+  /* Lightbox */
+  if (lightbox && lightboxImg && slides.length) {
+    const openLightbox = (i) => {
+      activeIndex = Math.max(0, Math.min(slides.length - 1, i));
+      const target = slides[activeIndex];
       const img = target.querySelector('img');
       lightboxImg.src = img.src;
       lightboxImg.alt = img.alt || '';
-      if (lightboxCap) lightboxCap.textContent = `Image ${currentIndex + 1} of ${galleryItems.length}`;
+      if (lightboxCap) lightboxCap.textContent = `Image ${activeIndex + 1} of ${slides.length}`;
       lightbox.classList.add('is-open');
       body.style.overflow = 'hidden';
+      lightboxOpen = true;
     };
-    const close = () => {
+    const closeLightbox = () => {
       lightbox.classList.remove('is-open');
       body.style.overflow = '';
+      lightboxOpen = false;
     };
-    galleryItems.forEach((item, i) => item.addEventListener('click', () => open(i)));
-    if (closeBtn) closeBtn.addEventListener('click', close);
-    if (prevBtn) prevBtn.addEventListener('click', () => {
-      // Step back to previous visible item
-      let i = currentIndex - 1;
-      while (i >= 0 && galleryItems[i].classList.contains('is-hidden')) i--;
-      if (i < 0) {
-        // wrap to last visible
-        for (let j = galleryItems.length - 1; j >= 0; j--) {
-          if (!galleryItems[j].classList.contains('is-hidden')) { i = j; break; }
-        }
-      }
-      if (i >= 0) open(i);
-    });
-    if (nextBtn) nextBtn.addEventListener('click', () => {
-      let i = currentIndex + 1;
-      while (i < galleryItems.length && galleryItems[i].classList.contains('is-hidden')) i++;
-      if (i >= galleryItems.length) {
-        for (let j = 0; j < galleryItems.length; j++) {
-          if (!galleryItems[j].classList.contains('is-hidden')) { i = j; break; }
-        }
-      }
-      if (i < galleryItems.length) open(i);
-    });
-    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
-    document.addEventListener('keydown', (e) => {
-      if (!lightbox.classList.contains('is-open')) return;
-      if (e.key === 'Escape') close();
-      if (e.key === 'ArrowLeft' && prevBtn) prevBtn.click();
-      if (e.key === 'ArrowRight' && nextBtn) nextBtn.click();
-    });
+    const lbNext = () => {
+      let i = activeIndex + 1;
+      while (i < slides.length && slides[i].classList.contains('is-hidden')) i++;
+      if (i >= slides.length) i = slides.findIndex(s => !s.classList.contains('is-hidden'));
+      if (i >= 0) openLightbox(i);
+    };
+    const lbPrev = () => {
+      let i = activeIndex - 1;
+      while (i >= 0 && slides[i].classList.contains('is-hidden')) i--;
+      if (i < 0) for (let j = slides.length - 1; j >= 0; j--) if (!slides[j].classList.contains('is-hidden')) { i = j; break; }
+      if (i >= 0) openLightbox(i);
+    };
+    slides.forEach((s, i) => s.addEventListener('click', () => {
+      if (didDrag) { didDrag = false; return; }
+      openLightbox(i);
+    }));
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    if (lbPrevBtn) lbPrevBtn.addEventListener('click', lbPrev);
+    if (lbNextBtn) lbNextBtn.addEventListener('click', lbNext);
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  }
+
+  /* Keyboard nav when carousel is in view */
+  const carouselInView = () => {
+    if (!carouselEl) return false;
+    const r = carouselEl.getBoundingClientRect();
+    return r.top < window.innerHeight && r.bottom > 0;
+  };
+  document.addEventListener('keydown', (e) => {
+    if (lightboxOpen) {
+      if (e.key === 'Escape') { lightbox.classList.remove('is-open'); body.style.overflow = ''; lightboxOpen = false; }
+      if (e.key === 'ArrowLeft' && lbPrevBtn) lbPrevBtn.click();
+      if (e.key === 'ArrowRight' && lbNextBtn) lbNextBtn.click();
+      return;
+    }
+    if (!carouselInView()) return;
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); prev(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+  });
+
+  /* Init */
+  if (slides.length) {
+    requestAnimationFrame(() => goTo(0, false));
   }
 
   /* ===== Toast helper ===== */
