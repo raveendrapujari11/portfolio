@@ -123,23 +123,6 @@
     if ((localStorage.getItem('themeMode') || 'system') === 'system') applyTheme('system');
   });
 
-  /* ===== Audio opt-in (no autoplay) ===== */
-  const audioBtn = $('#audio-toggle');
-  const audioIcon = $('#audio-icon');
-  const audio = $('#welcome-audio');
-  if (audioBtn && audio) {
-    audioBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.currentTime = 0;
-        audio.play().catch(err => console.warn('Audio play failed:', err));
-        if (audioIcon) audioIcon.className = 'bx bx-volume-full';
-      } else {
-        audio.pause();
-        if (audioIcon) audioIcon.className = 'bx bx-volume-mute';
-      }
-    });
-  }
-
   /* ===== Typing effect for hero ===== */
   const typingEl = $('#typing-text');
   if (typingEl) {

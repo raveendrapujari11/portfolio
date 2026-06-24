@@ -91,12 +91,12 @@
         </ul>
       </div>
       <div class="nav__actions">
-        <button class="nav__icon-btn" id="audio-toggle" aria-label="Play welcome message" title="Play welcome message">
-          <i class='bx bx-volume-mute' id="audio-icon"></i>
-        </button>
         <button class="nav__icon-btn" id="theme-toggle" aria-label="Toggle theme" title="Theme: system">
           <i class='bx bx-desktop' id="theme-icon"></i>
         </button>
+        <a class="nav__icon-btn" href="#recognition" aria-label="Recognition — achievements &amp; education" title="Recognition">
+          <i class='bx bx-graduation'></i>
+        </a>
         <button class="nav__icon-btn nav__toggle" id="nav-toggle" aria-label="Toggle menu">
           <i class='bx bx-menu'></i>
         </button>
@@ -888,9 +888,6 @@
     <button class="lightbox__btn lightbox__next" aria-label="Next image">&#10095;</button>
     <div class="lightbox__caption" id="lightbox-caption"></div>
   </div>
-
-  <!-- ===== Audio (no autoplay) ===== -->
-  <audio id="welcome-audio" src="assets/audio/hi.mp3" preload="none"></audio>
 
   <!-- ===== Scripts ===== -->
   <script src="assets/js/main.js"></script>
