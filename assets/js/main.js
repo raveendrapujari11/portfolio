@@ -172,13 +172,6 @@
       if (entry.isIntersecting) {
         const el = entry.target;
         el.classList.add('is-visible');
-        // Skill bars fill
-        if (el.classList.contains('bento__card')) {
-          el.querySelectorAll('.skill__fill').forEach(bar => {
-            const w = bar.getAttribute('data-fill') || '0';
-            requestAnimationFrame(() => { bar.style.width = w + '%'; });
-          });
-        }
         // Stat counters
         if (el.classList.contains('stat')) {
           const numEl = el.querySelector('.stat__value');

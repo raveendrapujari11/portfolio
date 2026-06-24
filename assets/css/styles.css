@@ -788,42 +788,26 @@ section .section-inner {
   margin-bottom: .25rem;
 }
 .bento__card p { font-size: .85rem; color: var(--text-muted); margin-bottom: var(--mb-3); }
-.skill-bar { display: flex; flex-direction: column; gap: .65rem; }
-.skill {
-  display: flex; flex-direction: column; gap: .3rem;
+.skill-tags {
+  display: flex; flex-wrap: wrap; gap: .4rem;
+  margin-top: var(--mb-2);
 }
-.skill__top {
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: .85rem; font-weight: 500;
-  color: var(--text-soft);
-}
-.skill__top .pct { color: var(--section-grad-2); font-weight: 700; }
-.skill__track {
-  position: relative;
-  height: 6px;
-  background: var(--surface-2);
-  border-radius: var(--radius-pill);
-  overflow: hidden;
-}
-.skill__fill {
-  position: absolute; top: 0; left: 0;
-  height: 100%;
-  width: 0;
-  background: linear-gradient(90deg, var(--section-grad-1), var(--section-grad-2), var(--section-grad-3));
-  border-radius: var(--radius-pill);
-  transition: width 1.6s cubic-bezier(.22,1,.36,1);
-}
-.skill-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: var(--mb-2); }
 .skill-tag {
-  font-size: .75rem; font-weight: 500;
-  padding: .25rem .55rem;
+  font-size: .8rem;
+  font-weight: 500;
+  padding: .35rem .7rem;
   border-radius: var(--radius-pill);
   background: var(--surface-2);
   color: var(--text-soft);
   border: 1px solid var(--border);
-  transition: background-color .2s ease, color .2s ease;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
 }
-.skill-tag:hover { background: var(--section-tint); color: var(--section-grad-2); }
+.skill-tag:hover {
+  background: var(--section-tint);
+  color: var(--section-grad-2);
+  border-color: var(--section-grad-2);
+  transform: translateY(-1px);
+}
 
 /* ===== PROJECTS ===== */
 .projects-grid {
