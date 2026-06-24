@@ -739,9 +739,23 @@ section .section-inner {
   .timeline__item:nth-child(odd) .exp-card__head,
   .timeline__item:nth-child(odd) .exp-card__meta { justify-content: flex-end; }
 }
-.exp-card ul { margin: 0; padding-left: 1.1rem; }
-.exp-card ul li { margin-bottom: .35rem; line-height: 1.6; color: var(--text-soft); font-size: .92rem; position: relative; }
-.exp-card ul li::marker { color: var(--section-grad-2); }
+.exp-card ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.exp-card ul li {
+  margin-bottom: .35rem;
+  line-height: 1.6;
+  color: var(--text-soft);
+  font-size: .92rem;
+  position: relative;
+  padding-left: .25rem;
+}
+.exp-card ul li::marker {
+  color: var(--section-grad-2);
+  font-size: 1.1em;
+}
 
 /* ===== SKILLS (bento grid with progress) ===== */
 .bento {
